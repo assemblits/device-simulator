@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>516</width>
-    <height>396</height>
+    <height>459</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -753,7 +753,7 @@
      <x>0</x>
      <y>0</y>
      <width>516</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Device">
@@ -776,7 +776,7 @@
   </widget>
   <action name="actionConnect">
    <property name="icon">
-    <iconset resource="slave.qrc">
+    <iconset resource="device-simulator.qrc">
      <normaloff>:/images/connect.png</normaloff>:/images/connect.png</iconset>
    </property>
    <property name="text">
@@ -785,7 +785,7 @@
   </action>
   <action name="actionDisconnect">
    <property name="icon">
-    <iconset resource="slave.qrc">
+    <iconset resource="device-simulator.qrc">
      <normaloff>:/images/disconnect.png</normaloff>:/images/disconnect.png</iconset>
    </property>
    <property name="text">
@@ -794,7 +794,7 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset resource="slave.qrc">
+    <iconset resource="device-simulator.qrc">
      <normaloff>:/images/application-exit.png</normaloff>:/images/application-exit.png</iconset>
    </property>
    <property name="text">
@@ -803,7 +803,7 @@
   </action>
   <action name="actionOptions">
    <property name="icon">
-    <iconset resource="slave.qrc">
+    <iconset resource="device-simulator.qrc">
      <normaloff>:/images/settings.png</normaloff>:/images/settings.png</iconset>
    </property>
    <property name="text">
@@ -859,7 +859,7 @@
   <tabstop>holdReg_9</tabstop>
  </tabstops>
  <resources>
-  <include location="slave.qrc"/>
+  <include location="device-simulator.qrc"/>
  </resources>
  <connections/>
 </ui>
