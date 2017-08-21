@@ -1,3 +1,49 @@
 language: cpp
-os:
-  - linux
+sudo: required
+dist: trusty
+
+addons:
+  coverity_scan:
+    project:
+      name: "eru/device-simulator"
+      description: "A generic tile map editor"
+    notification_email: marlontrujillo1080@gmail.com
+    build_command_prepend: qmake
+    build_command: make
+    branch_pattern: coverity_scan
+
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+      before_install:
+        - sudo add-apt-repository --yes ppa:beineri/opt-qt591-trusty
+        - sudo apt-get update -qq
+        - sudo apt-get -y install qt59base qt59svg qt59imageformats qt59tools qt59qbs binutils zlib1g-dev
+        - source /opt/qt59/bin/qt59-env.sh
+      script:
+        - qbs --version
+        - qbs setup-toolchains --detect
+        - qbs setup-qt --detect
+        - qbs config defaultProfile qt-5-9-1
+        - qbs install --install-root eru/device-simulator release
+        - cp LICENSE* COPYING *md Tiled/
+      after_success:
+      deploy:
+        - provider: releases
+          skip_cleanup: true
+          draft: true
+          file_glob: true
+          on:
+            repo: eru-scada/device-simulator
+            tags: true
+        - provider: script
+          skip_cleanup: true
+          on:
+            all_branches: true
+
+before_script:
+  - qmake -version
+  - if [[ "$TRAVIS_TAG" ]]; then export DEVICE-SIMULATOR_RELEASE=true ; fi
+  - if [[ "$TRAVIS_TAG" ]]; then export DEVICE-SIMULATOR_VERSION=${TRAVIS_TAG:1} ; fi
+  - if [[ "$TRAVIS_BRANCH" == "snapshot" ]]; then export DEVICE-SIMULATOR_SNAPSHOT=true ; fi
