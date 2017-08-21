@@ -5,7 +5,7 @@ dist: trusty
 addons:
   coverity_scan:
     project:
-      name: "eru/device-simulator"
+      name: "eru-scada/device-simulator"
       description: "A generic tile map editor"
     notification_email: marlontrujillo1080@gmail.com
     build_command_prepend: qmake
@@ -26,7 +26,7 @@ matrix:
         - qbs setup-toolchains --detect
         - qbs setup-qt --detect
         - qbs config defaultProfile qt-5-9-1
-        - qbs install --install-root eru/device-simulator release
+        - qbs install --install-root eru-scada/device-simulator release
         - cp LICENSE* COPYING *md Tiled/
       after_success:
       deploy:
