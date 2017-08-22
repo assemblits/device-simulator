@@ -31,7 +31,7 @@ matrix:
         - cp LICENSE* COPYING *md eru/device-simulator
       after_success:
       after_failure:
-        - tree /home
+        - tree /opt
       deploy:
         - provider: releases
           skip_cleanup: true
