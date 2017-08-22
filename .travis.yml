@@ -23,17 +23,11 @@ matrix:
         - source /opt/qt59/bin/qt59-env.sh
         - sudo apt-get install tree
       script:
-        - qbs --version
-        - qbs setup-toolchains --detect
-        - qbs setup-qt --detect
-        - qbs config defaultProfile qt-5-9-1
-        - ls
-        - tree ./
-        - qbs install --install-root opt/eru/device-simulator release
+        - qmake --version
+        - qmake device-simulator.pro -spec linux-g++
         - cp LICENSE* COPYING *md eru/device-simulator
       after_success:
       after_failure:
-        - ls
       deploy:
         - provider: releases
           skip_cleanup: true
