@@ -40,10 +40,3 @@ win* {
 TEMPLATE    = subdirs
 SUBDIRS     = src
 
-# Initialize the version
-isEmpty(DEVICE-SIMULATOR_VERSION):DEVICE-SIMULATOR_VERSION = "0.0.1"
-
-# See the README file for instructions about setting the install prefix.
-isEmpty(PREFIX):PREFIX = /opt
-isEmpty(LIBDIR):LIBDIR = $${PREFIX}/lib
-

@@ -2,6 +2,9 @@ CONFIG      += qt c++11
 QT          += serialbus serialport widgets
 
 TARGET      = device-simulator
+
+isEmpty(PREFIX):PREFIX = /opt/eru
+isEmpty(LIBDIR):LIBDIR = $${PREFIX}/lib
 target.path = $${PREFIX}/device-simulator
 INSTALLS    += target
 
