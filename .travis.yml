@@ -28,14 +28,3 @@ matrix:
       after_success:
       after_failure:
       deploy:
-        - provider: releases
-          skip_cleanup: true
-          draft: true
-          file_glob: true
-          on:
-            repo: eru-scada/device-simulator
-            tags: true
-        - provider: script
-          skip_cleanup: true
-          on:
-            all_branches: true
