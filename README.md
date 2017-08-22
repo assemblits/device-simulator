@@ -17,6 +17,8 @@ After installing you can compile by running:
     $ qmake (or qmake-qt5 on some systems)
     $ make
 
+Download the current release of device-simulator.
+
 To do a shadow build, you can run qmake from a different directory and refer
 it to device-simulator.pro build file, for example:
 
