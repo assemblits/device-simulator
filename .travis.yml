@@ -25,7 +25,6 @@ matrix:
       script:
         - qmake --version
         - qmake device-simulator.pro -spec linux-g++
-        - cp LICENSE* COPYING *md eru/device-simulator
       after_success:
       after_failure:
       deploy:
