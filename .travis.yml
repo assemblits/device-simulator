@@ -32,6 +32,7 @@ matrix:
       after_success:
       after_failure:
         - cd /opt
+        - ls
       deploy:
         - provider: releases
           skip_cleanup: true
