@@ -28,3 +28,9 @@ matrix:
       after_success:
       after_failure:
       deploy:
+        provider: releases
+        api_key: "95835dd7b910862e43d2f2cc525d20afe20a9ae0"
+        file: "./"
+        skip_cleanup: true
+        on:
+          tags: true
