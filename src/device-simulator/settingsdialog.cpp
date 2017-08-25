@@ -38,6 +38,16 @@
 **
 ****************************************************************************/
 
+/****************************************************************************
+**
+** Eru Organization modification
+**
+** This file is part of the examples of the QtSerialBus module. Used to test
+** Modbus communications. Based on Qt software.
+**
+**
+****************************************************************************/
+
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
 

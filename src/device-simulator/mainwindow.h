@@ -38,12 +38,23 @@
 **
 ****************************************************************************/
 
+/****************************************************************************
+**
+** Eru Organization modification
+**
+** This file is part of the examples of the QtSerialBus module. Used to test
+** Modbus communications. Based on Qt software.
+**
+**
+****************************************************************************/
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QButtonGroup>
 #include <QMainWindow>
 #include <QModbusServer>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 
@@ -73,6 +84,8 @@ private Q_SLOTS:
     void coilChanged(int id);
     void discreteInputChanged(int id);
     void bitChanged(int id, QModbusDataUnit::RegisterType table, bool value);
+    void randomizerButtonPressed(int id, bool toggled);
+    void setRandomNumbers();
 
     void setRegister(const QString &value);
     void updateWidgets(QModbusDataUnit::RegisterType table, int address, int size);
@@ -92,7 +105,10 @@ private:
     QButtonGroup coilButtons;
     QButtonGroup discreteButtons;
     QHash<QString, QLineEdit *> registers;
+    QButtonGroup randomizersButtons;
     SettingsDialog *m_settingsDialog;
+
+    QTimer *randomizerTimer;
 };
 
 #endif // MAINWINDOW_H

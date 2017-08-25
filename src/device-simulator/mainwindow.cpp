@@ -38,6 +38,16 @@
 **
 ****************************************************************************/
 
+/****************************************************************************
+**
+** Eru Organization modification
+**
+** This file is part of the examples of the QtSerialBus module. Used to test
+** Modbus communications. Based on Qt software.
+**
+**
+****************************************************************************/
+
 #include "mainwindow.h"
 #include "settingsdialog.h"
 #include "ui_mainwindow.h"
@@ -47,7 +57,7 @@
 #include <QRegularExpression>
 #include <QStatusBar>
 #include <QUrl>
-
+#include <iostream>
 enum ModbusConnection {
     Serial,
     Tcp
@@ -165,15 +175,15 @@ void MainWindow::on_connectButton_clicked()
     if (intendToConnect) {
         if (static_cast<ModbusConnection> (ui->connectType->currentIndex()) == Serial) {
             modbusDevice->setConnectionParameter(QModbusDevice::SerialPortNameParameter,
-                ui->portEdit->text());
+                                                 ui->portEdit->text());
             modbusDevice->setConnectionParameter(QModbusDevice::SerialParityParameter,
-                m_settingsDialog->settings().parity);
+                                                 m_settingsDialog->settings().parity);
             modbusDevice->setConnectionParameter(QModbusDevice::SerialBaudRateParameter,
-                m_settingsDialog->settings().baud);
+                                                 m_settingsDialog->settings().baud);
             modbusDevice->setConnectionParameter(QModbusDevice::SerialDataBitsParameter,
-                m_settingsDialog->settings().dataBits);
+                                                 m_settingsDialog->settings().dataBits);
             modbusDevice->setConnectionParameter(QModbusDevice::SerialStopBitsParameter,
-                m_settingsDialog->settings().stopBits);
+                                                 m_settingsDialog->settings().stopBits);
         } else {
             const QUrl url = QUrl::fromUserInput(ui->portEdit->text());
             modbusDevice->setConnectionParameter(QModbusDevice::NetworkPortParameter, url.port());
@@ -226,6 +236,26 @@ void MainWindow::bitChanged(int id, QModbusDataUnit::RegisterType table, bool va
         statusBar()->showMessage(tr("Could not set data: ") + modbusDevice->errorString(), 5000);
 }
 
+void MainWindow::randomizerButtonPressed(int id, bool toggled){
+    if(toggled){
+        randomizerTimer = new QTimer(this);
+        connect(randomizerTimer, SIGNAL(timeout()), this, SLOT(setRandomNumbers()));
+        randomizerTimer->start(250);
+    } else {
+        randomizerTimer->stop();
+    }
+}
+
+void MainWindow::setRandomNumbers() {
+    if (!randomizerTimer->isActive()) { return; }
+
+    int top = 32000;
+    for (QLineEdit *qle : registers.values()){
+        int randomValue = qrand() % top;
+        qle->setText(QString::number(randomValue));
+    }
+}
+
 void MainWindow::setRegister(const QString &value)
 {
     if (!modbusDevice)
@@ -259,7 +289,7 @@ void MainWindow::updateWidgets(QModbusDataUnit::RegisterType table, int address,
         case QModbusDataUnit::HoldingRegisters:
             modbusDevice->data(QModbusDataUnit::HoldingRegisters, address + i, &value);
             registers.value(QStringLiteral("holdReg_%1").arg(address + i))->setText(text
-                .setNum(value, 16));
+                                                                                    .setNum(value, 16));
             break;
         default:
             break;
@@ -279,17 +309,17 @@ void MainWindow::setupDeviceData()
 
     for (int i = 0; i < discreteButtons.buttons().count(); ++i) {
         modbusDevice->setData(QModbusDataUnit::DiscreteInputs, i,
-            discreteButtons.button(i)->isChecked());
+                              discreteButtons.button(i)->isChecked());
     }
 
     bool ok;
     for (QLineEdit *widget : qAsConst(registers)) {
         if (widget->objectName().startsWith(QStringLiteral("inReg"))) {
             modbusDevice->setData(QModbusDataUnit::InputRegisters, widget->property("ID").toInt(),
-                widget->text().toInt(&ok, 16));
+                                  widget->text().toInt(&ok, 16));
         } else if (widget->objectName().startsWith(QStringLiteral("holdReg"))) {
             modbusDevice->setData(QModbusDataUnit::HoldingRegisters, widget->property("ID").toInt(),
-                widget->text().toInt(&ok, 16));
+                                  widget->text().toInt(&ok, 16));
         }
     }
 }
@@ -317,7 +347,14 @@ void MainWindow::setupWidgetContainers()
         registers.insert(lineEdit->objectName(), lineEdit);
         lineEdit->setProperty("ID", regexp.match(lineEdit->objectName()).captured("ID").toInt());
         lineEdit->setValidator(new QRegExpValidator(QRegExp(QStringLiteral("[0-9a-f]{0,4}"),
-            Qt::CaseInsensitive), this));
+                                                            Qt::CaseInsensitive), this));
         connect(lineEdit, &QLineEdit::textChanged, this, &MainWindow::setRegister);
+    }
+
+    regexp.setPattern(QLatin1String("randomizer"));
+    const QList<QPushButton *> randomizers = findChildren<QPushButton *>(regexp);
+    for (QPushButton *qpb : randomizers) {
+        randomizersButtons.addButton(qpb, regexp.match(qpb->objectName()).captured("ID").toInt());
+        connect(&randomizersButtons, SIGNAL(buttonToggled(int,bool)), this, SLOT(randomizerButtonPressed(int, bool)));
     }
 }
