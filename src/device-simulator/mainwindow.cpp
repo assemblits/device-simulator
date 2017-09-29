@@ -198,6 +198,7 @@ void MainWindow::on_connectButton_clicked()
             ui->actionDisconnect->setEnabled(true);
         }
     } else {
+        randomizerButtonPressed(false);
         modbusDevice->disconnectDevice();
         ui->actionConnect->setEnabled(true);
         ui->actionDisconnect->setEnabled(false);
