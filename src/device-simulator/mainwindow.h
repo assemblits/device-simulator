@@ -52,6 +52,7 @@
 #define MAINWINDOW_H
 
 #include <QButtonGroup>
+#include <QPushButton>
 #include <QMainWindow>
 #include <QModbusServer>
 #include <QTimer>
@@ -84,7 +85,7 @@ private Q_SLOTS:
     void coilChanged(int id);
     void discreteInputChanged(int id);
     void bitChanged(int id, QModbusDataUnit::RegisterType table, bool value);
-    void randomizerButtonPressed(int id, bool toggled);
+    void randomizerButtonPressed(bool toggled);
     void setRandomNumbers();
 
     void setRegister(const QString &value);
@@ -105,7 +106,7 @@ private:
     QButtonGroup coilButtons;
     QButtonGroup discreteButtons;
     QHash<QString, QLineEdit *> registers;
-    QButtonGroup randomizersButtons;
+    QPushButton* randomizerButton;
     SettingsDialog *m_settingsDialog;
 
     QTimer *randomizerTimer;

@@ -58,6 +58,7 @@
 #include <QStatusBar>
 #include <QUrl>
 #include <iostream>
+#include <QDebug>
 enum ModbusConnection {
     Serial,
     Tcp
@@ -236,7 +237,7 @@ void MainWindow::bitChanged(int id, QModbusDataUnit::RegisterType table, bool va
         statusBar()->showMessage(tr("Could not set data: ") + modbusDevice->errorString(), 5000);
 }
 
-void MainWindow::randomizerButtonPressed(int id, bool toggled){
+void MainWindow::randomizerButtonPressed(bool toggled){
     if(toggled){
         randomizerTimer = new QTimer(this);
         connect(randomizerTimer, SIGNAL(timeout()), this, SLOT(setRandomNumbers()));
@@ -269,7 +270,6 @@ void MainWindow::setRegister(const QString &value)
             ok = modbusDevice->setData(QModbusDataUnit::InputRegisters, id, value.toInt(&ok, 16));
         else if (objectName.startsWith(QStringLiteral("holdReg")))
             ok = modbusDevice->setData(QModbusDataUnit::HoldingRegisters, id, value.toInt(&ok, 16));
-
         if (!ok)
             statusBar()->showMessage(tr("Could not set register: ") + modbusDevice->errorString(),
                                      5000);
@@ -351,10 +351,6 @@ void MainWindow::setupWidgetContainers()
         connect(lineEdit, &QLineEdit::textChanged, this, &MainWindow::setRegister);
     }
 
-    regexp.setPattern(QLatin1String("randomizer"));
-    const QList<QPushButton *> randomizers = findChildren<QPushButton *>(regexp);
-    for (QPushButton *qpb : randomizers) {
-        randomizersButtons.addButton(qpb, regexp.match(qpb->objectName()).captured("ID").toInt());
-        connect(&randomizersButtons, SIGNAL(buttonToggled(int,bool)), this, SLOT(randomizerButtonPressed(int, bool)));
-    }
+    randomizerButton = findChild<QPushButton *>("randomizer");
+    connect(randomizerButton, SIGNAL(toggled(bool)), this, SLOT(randomizerButtonPressed(bool)));
 }
